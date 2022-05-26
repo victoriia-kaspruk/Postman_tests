@@ -1,0 +1,638 @@
+{
+	"info": {
+		"_postman_id": "175dc5fb-fce7-48ba-a301-2f421dd5b88f",
+		"name": "HomeTask_postman_3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user_info_2_positive",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/* Необходимо провести тестирование API данного эндпоинта на валидацию входных параметров. Суть задания: проверить валидации каждого поля, подаваемого в эндпоинт на возможные значения. Будем УСЛОВНО считать, что негативная проверка должна возвращать какой угодно статус НО НЕ 200! Ваша задача написать тест кейсы в постмане таким образом, что одна негативная проверка - один запрос, позитивные проверки можно объединять в 1. Ваша задача протестировать исходя из требований на все возможные аспекты. В каждом запросе тест ТОЛЬКО НА СТАТУС КОД (200 - позитивное значение, не 200 - негативное). */\r",
+							"\r",
+							"//Name: 3-40 символов включительно, запрещены префиксные и постфиксные пробелы. Поле обязательное\r",
+							"\r",
+							"\r",
+							"let req = request.data;\r",
+							"//console.log(req)\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200 for name\", function () {\r",
+							"    if ((req.name.length) >= 3 && (req.name.length <=40)) {\r",
+							"        pm.response.to.have.status(200);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"NAME not below 3\", function () {\r",
+							"    pm.expect(req.name.length).is.not.below(3)\r",
+							"}); // не меньше 3\r",
+							"\r",
+							"pm.test(\"NAME not above 40\", function () {\r",
+							"    pm.expect(req.name.length).is.not.above(40)\r",
+							"}); //не больше 40\r",
+							"\r",
+							"pm.test(\"NAME is string \", function () {\r",
+							"    pm.expect(req.name).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"NAME is NOT empty\", function () {\r",
+							"    pm.expect(req.name).to.not.be.empty;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check REQUIRED name\", function () {\r",
+							"    if (req.name.required){\r",
+							"  pm.response.to.have.status(400);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check all required fields\", function () {\r",
+							"    pm.expect(req).to.have.keys(['name', 'age', 'salary']);\r",
+							"});\r",
+							"\r",
+							"//Age: только целые цифры в диапазоне 18-120 включительно. Поле обязательное\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"//Salary: только целые цифры в диапазоне 1-1000000 включительно. Поле обязательное\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "yyuu",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "44",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "2600",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info_2",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info_2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user_info_2_negative",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let req = request.data;\r",
+							"\r",
+							"pm.test(\"Status code 405\", function () {\r",
+							"    if (req.name.length < 3) {\r",
+							"        pm.response.to.have.status(405);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"not underfined\", function () {\r",
+							"    if (req.name.length < 3) {\r",
+							"        pm.response.to.not.be.undefined;;\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Without spaces\", function () {\r",
+							"    if (req.name[0] === \" \" || req.name[req.name.length - 1] === \" \") {\r",
+							"        pm.response.to.have.status(400);\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"/* pm.test(\"name - undefined\", function () {\r",
+							"pm.expect(req.name).to.be.undefined;\r",
+							"}); */"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "undefined",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "25",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "2600",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info_2",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info_2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "object_info_4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"/* Преобразовать пункты 12-13-14 (salary из реквеста и респонса равны) таким образом, чтобы проверка производилась циклом, в котором будет всего ОДИН тест. Имя теста должно меняться в зависимости от значения в Salary */\r",
+							"\r",
+							"let req_salary = pm.request.url.query.get('salary');\r",
+							"//console.log(req_salary);\r",
+							"\r",
+							"let resp_salary = pm.response.json().salary;\r",
+							"//console.log(resp_salary);\r",
+							"\r",
+							"//Цикл for\r",
+							"\r",
+							"for (i = 0; i <resp_salary.length; i++) {\r",
+							"    pm.test(`req_salary ${req_salary}*${i + 1} = resp_salary ${resp_salary[i]}`, function () {\r",
+							"        pm.expect(+req_salary * (i + 1)).to.eql(+(resp_salary[i]));\r",
+							"        //console.log(+req_salary*(i+1));\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"//forEach\r",
+							"\r",
+							"resp_salary.forEach((element , i) => {\r",
+							"     pm.test(`req_salary second ${req_salary}*${i + 1} = resp_salary ${element}`, function () {\r",
+							"        pm.expect(+req_salary * (i + 1)).to.eql(+element)\r",
+							"})\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/object_info_4?name=Karl&age=35&salary=3500",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"object_info_4"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Karl"
+						},
+						{
+							"key": "age",
+							"value": "35"
+						},
+						{
+							"key": "salary",
+							"value": "3500"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "object_info_3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/*Преобразовать задания 5-7 (сравнить идентичные поля в реквесте и респонсе) таким образом, чтобы это делалось ЗА ОДИН ТЕСТ (сразу все 3 поля) БЕЗ ЦИКЛОВ! (глубокое сравнение объектов) */\r",
+							"\r",
+							"let req_salary = +(pm.request.url.query.get(\"salary\"));\r",
+							"let req_age = +(pm.request.url.query.get(\"age\"));\r",
+							"let req_name = pm.request.url.query.get(\"name\");\r",
+							"\r",
+							"\r",
+							"const req_object = {\r",
+							"    salary: req_salary,\r",
+							"    age: req_age,\r",
+							"    name: req_name\r",
+							"}\r",
+							"//console.log(req_object);\r",
+							"\r",
+							"let resp_salary = pm.response.json().salary;\r",
+							"let resp_age = +(pm.response.json().age);\r",
+							"let resp_name = pm.response.json().name;\r",
+							"\r",
+							"const resp_object = {\r",
+							"    salary: resp_salary,\r",
+							"    age: resp_age,\r",
+							"    name: resp_name\r",
+							"}\r",
+							"//console.log(resp_object)\r",
+							"\r",
+							"//респонс преобразуем через перебор обьекта (это не тест просто функция для преобразования)\r",
+							"pm.test(\"Compare with KEY\", function () {\r",
+							"    for (key in req_object) {\r",
+							"        if (!isNaN(pm.response.json()[key])) {\r",
+							"            resp_object[key] = +(pm.response.json()[key]);\r",
+							"        }\r",
+							"        else {\r",
+							"            resp_object[key] = pm.response.json()[key];\r",
+							"        }\r",
+							"    }\r",
+							"})\r",
+							"\r",
+							"//используем deep.equal для сравнения обьектов\r",
+							"pm.test(\"Compare TWO object\", function () {\r",
+							"    pm.expect(req_object).to.deep.equal(resp_object)\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/object_info_3?name=Vika&age=31&salary=2700",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"object_info_3"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Vika"
+						},
+						{
+							"key": "age",
+							"value": "31"
+						},
+						{
+							"key": "salary",
+							"value": "2700"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user_info_2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/*Преобразовать задания 8 - 13 (проверить что в json имеется нужный параметр) таким образом, чтобы все проверки делались в цикле (1 проверка в цикле, в которую попадают нужные параметры). Название теста должно видоизменяться исходя из подаваемых данных. ( ${}  или другим способом)\r",
+							"2) ** Преобразовать задания 14 - 18 (проверить что параметр равен salary умножить на коэффициент) таким образом, чтобы все проверки делались в цикле (1 проверка в цикле, в которую попадают нужные параметры). Название теста должно видоизменяться исходя из подаваемых данных. ( ${}  или другим способом)\r",
+							"3) *** Преобразовать описанные выше задания 1 и 2 для данного эндпоинта в ОДИН ЦИКЛ, в котором будут проходить ОБА теста. */\r",
+							"\r",
+							"let arr=[];\r",
+							"for(const key in pm.response.json()){\r",
+							"arr.push(key);\r",
+							"}\r",
+							"//console.log(arr);\r",
+							"\r",
+							"const resp=pm.response.json();\r",
+							"\r",
+							"//проверяем что все параметры с массива есть в респонсе \r",
+							"arr.forEach((element) => {\r",
+							"pm.test(`Responce has a ${element}`, function(){\r",
+							"    pm.expect(pm.response.json()).to.have.property(element)\r",
+							"})\r",
+							"})\r",
+							"\r",
+							"//массив коэфициентов salary\r",
+							"const count=[\"\",3.3,2.7,3.8,2,1];\r",
+							"\r",
+							"\r",
+							"arr.forEach((element, i) => {\r",
+							"    if(element!='person')\r",
+							"pm.test(`Responce22 has a ${element}`, function(){\r",
+							"    pm.expect(resp[element]).to.eql(2500*count[i])\r",
+							"})\r",
+							"})\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Viktoriia",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "25",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "2500",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info_2",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info_2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user_info_2_second",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/*Преобразовать задания 8 - 13 (проверить что в json имеется нужный параметр) таким образом, чтобы все проверки делались в цикле (1 проверка в цикле, в которую попадают нужные параметры). Название теста должно видоизменяться исходя из подаваемых данных. ( ${}  или другим способом)\r",
+							"2) ** Преобразовать задания 14 - 18 (проверить что параметр равен salary умножить на коэффициент) таким образом, чтобы все проверки делались в цикле (1 проверка в цикле, в которую попадают нужные параметры). Название теста должно видоизменяться исходя из подаваемых данных. ( ${}  или другим способом)\r",
+							"3) *** Преобразовать описанные выше задания 1 и 2 для данного эндпоинта в ОДИН ЦИКЛ, в котором будут проходить ОБА теста. */\r",
+							"\r",
+							"let arr = [];\r",
+							"const resp = pm.response.json();\r",
+							"const salary = 2500; // взяли с реквеста с Body\r",
+							"\r",
+							"const counters = { // респонс обьект по salary \r",
+							"    \"person\": \"\",\r",
+							"    \"start_qa_salary\": 1,\r",
+							"    \"qa_salary_after_6_months\": 2,\r",
+							"    \"qa_salary_after_12_months\": 2.7,\r",
+							"    \"qa_salary_after_1.5_year\": 3.3,\r",
+							"    \"qa_salary_after_3.5_years\": 3.8\r",
+							"}\r",
+							"\r",
+							"for (const key in counters) {\r",
+							"    pm.test(`Response has ${key}`, () => {\r",
+							"        pm.expect(resp).to.have.property(key)\r",
+							"    })\r",
+							"    if (key != 'person') {\r",
+							"        pm.test(`${key}=${salary}*${counters[key]}`, () => {\r",
+							"            pm.expect(resp[key]).to.eql(counters[key] * salary) //значение которое лежим в salary в респонсе \r",
+							"        })\r",
+							"    }\r",
+							"\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Viktoriia",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "25",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "2500",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info_2",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info_2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate_user_info_2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// 1) Name: 3-40 символов включительно, запрещены префиксные и постфиксные пробелы. Поле обязательное\r",
+							"// 2) Age: только целые цифры в диапазоне 18-120 включительно. Поле обязательное\r",
+							"// 3) Salary: только целые цифры в диапазоне 1-1000000 включительно. Поле обязательное\r",
+							"\r",
+							"function nameValidation(value) {\r",
+							"    if(value && value.length > 2 && value.length < 41 && value.trim() == value) {\r",
+							"        return true\r",
+							"    } else return false\r",
+							"} \r",
+							"function ageValidation(value) {\r",
+							"  if(value && !isNaN(value) && value > 17 && value < 121 && Number.isInteger(+value)) {\r",
+							"      return true\r",
+							"  } else return false\r",
+							"}\r",
+							"\r",
+							" function salaryValidation(value) {\r",
+							"     if(value && !isNaN(value) && value > 0 && value < 11000001 && Number.isInteger(+value)) {\r",
+							"         return true\r",
+							"     } else return false\r",
+							" }\r",
+							"\r",
+							"function validator() {\r",
+							"    return nameValidation(name) && ageValidation(age) && salaryValidation(salary) ? true : false\r",
+							"}\r",
+							"let name = pm.iterationData.get('name')\r",
+							"let age = pm.iterationData.get('age')\r",
+							"let salary = pm.iterationData.get('salary')\r",
+							"\r",
+							"\r",
+							"if(validator()) {\r",
+							"    pm.test(`Expect status 200 with name = \"${name}\", age = \"${age}\" and salary = \"${salary}\"`, () => {\r",
+							"         pm.response.to.have.status(200);\r",
+							"    }) \r",
+							"} else {\r",
+							"     pm.test(`Expect NOT to have status 200 with name = \"${name}\", age = \"${age}\" and salary = \"${salary}\"`, () => {\r",
+							"         pm.response.to.not.have.status(200);\r",
+							"    })  \r",
+							"}\r",
+							"console.log(validator())\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "{{salary}}",
+							"type": "text"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info_2",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info_2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
